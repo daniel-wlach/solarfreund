@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolarFreund | Lokaler Strom direkt vom Erzeuger</title>
+    
+    <style>
+        :root {
+            --bg-color: #F8F9FA;
+            --text-color: #1A1A1A;
+            --primary-color: #103B7C;
+            --accent-color: #0080FF;
+            --contrast-gold: #8C6320;
+            --box-bg: #FFFFFF;
+            --border-color: #CBD5E1;
+            --focus-ring: #005FCC;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        a:focus, button:focus, input:focus, textarea:focus {
+            outline: 3px solid var(--focus-ring);
+            outline-offset: 2px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 48px; 
+            width: auto;
+            object-fit: contain;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 0; 
+            padding: 0;
+        }
+
+        nav a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem;
+            display: inline-block;
+        }
+
+        nav a:hover, nav a.active {
+            text-decoration: underline;
+            text-decoration-thickness: 3px;
+        }
+
+        main {
+            flex: 1 0 auto;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            width: 100%;
+        }
+
+        .content-section {
+            display: none;
+            background: var(--box-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        h1 { font-size: 2.2rem; margin-bottom: 1rem; color: var(--primary-color); }
+        h2 { font-size: 1.6rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 5px; }
+        h3 { font-size: 1.2rem; margin-top: 1.2rem; margin-bottom: 0.5rem; color: var(--text-color); }
+        p, ul, ol { margin-bottom: 1rem; }
+        ul, ol { margin-left: 20px; }
+
+        .pricing-grid {
+            display: flex;
+            gap: 24px;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .price-card {
+            flex: 1;
+            min-width: 280px;
+            border: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            background: var(--box-bg);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .price-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(16, 59, 124, 0.1);
+        }
+
+        .price-card h3 { color: var(--primary-color); font-size: 1.5rem; margin-top: 0; }
+        
+        .price-display {
+            font-size: 2.2rem; 
+            font-weight: bold; 
+            margin: 1rem 0; 
+            color: var(--primary-color);
+        }
+        
+        .price-features {
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        button.cta-btn {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+        button.cta-btn:hover { background-color: #0c2a59; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+        th { background-color: var(--border-color); font-weight: bold; color: var(--text-color); }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        label { display: block; font-weight: bold; margin-bottom: 0.5rem; color: var(--text-color); }
+        input[type="text"], input[type="email"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            color: var(--text-color);
+            background-color: #FFFFFF;
+        }
+
+        .audio-transcript {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            margin-top: 8px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: var(--box-bg);
+        }
+
+        #cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1A1A1A;
+            color: #FFFFFF;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        /* Button nutzt jetzt sauberes Marineblau für garantierten AXE-Kontrast (> 8:1) */
+        #cookie-banner button {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            border: 1px solid #FFFFFF;
+            padding: 8px 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #cookie-banner button:hover {
+            background-color: #0c2a59;
+        }
+
+        footer {
+            flex-shrink: 0;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--box-bg);
+            width: 100%;
+        }
+        footer a {
+            color: var(--primary-color);
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 1rem;
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            padding: 0.6rem 1.2rem;
+            font-weight: bold;
+            border-radius: 0 0 6px 6px;
+            text-decoration: none;
+            z-index: 9999;
+            transition: top 0.2s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        #cookie-banner button + button {
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
+
+    <header>
+        <div class="nav-container">
+            <a href="#startseite" class="logo" aria-label="SolarFreund Startseite">
+                <img src="Logo.png" alt="SolarFreund Logo">
+                SolarFreund
+            </a>
+            <nav aria-label="Hauptnavigation">
+                <ul>
+                    <li><a href="#startseite" class="nav-link active" aria-current="page">Startseite & Shop</a></li>
+                    <li><a href="#about" class="nav-link">Über uns (Marken)</a></li>
+                    <li><a href="#lizenz" class="nav-link">Lizenzen</a></li>
+                    <li><a href="#datenschutz" class="nav-link">Datenschutz</a></li>
+                    <li><a href="#kontakt" class="nav-link">Kontakt & Impressum</a></li>
+                    <li><a href="#barrierefreiheit" class="nav-link">Barrierefreiheit</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section id="startseite" class="content-section active" aria-label="Startseite und Shop">
+            <h1>Strom direkt vom Nachbarn beziehen</h1>
+            
+            <p>Die meisten Menschen kennen das Problem: Man zahlt jeden Monat viel Geld an einen großen, anonymen Stromkonzern, weiß aber eigentlich gar nicht genau, wo die Energie überhaupt herkommt. Gleichzeitig haben immer mehr Leute in der eigenen Nachbarschaft Solaranlagen auf dem Dach und produzieren oft mehr Strom, als sie selbst verbrauchen können.</p>
+            
+            <p>Genau hier setzt SolarFreund an. Wir haben eine Plattform gebaut, die dich direkt mit privaten Erzeugern aus deiner Umgebung vernetzt. Statt anonymem Mix-Strom kaufst du regionalen Solarstrom von echten Menschen. Die Zuteilung und die exakte viertelstündliche Abrechnung regeln wir vollautomatisch im Hintergrund. Alles, was du dafür brauchst, ist der Smart-Meter, der ohnehin in deinem Keller hängt. Du musst keine neuen Kabel verlegen und brauchst auch keinen Techniker.</p>
+
+            <h2>Deine Vorteile auf einen Blick</h2>
+            <ul>
+                <li><strong>Das Geld bleibt in der Region:</strong> Du bezahlst faire Preise direkt an Familien oder Kleinbetriebe in deiner Nähe, statt die Margen von Zwischenhändlern zu finanzieren.</li>
+                <li><strong>Volle Transparenz:</strong> Du siehst in unserem Dashboard genau, wie viel Cent pro Kilowattstunde an den Erzeuger gehen und wie hoch die reinen Netzkosten sind.</li>
+                <li><strong>Keine Knebelverträge:</strong> Unsere Software-Abos sind monatlich kündbar. Wenn du unzufrieden bist oder umziehst, bist du mit einem Klick wieder raus.</li>
+            </ul>
+            
+            <h2>Wähle dein passendes Dashboard-Abo</h2>
+            <div class="pricing-grid">
+                <div class="price-card">
+                    <div>
+                        <h3>Basic Plan</h3>
+                        <div class="price-display">2,90 € <span style="font-size:1rem; color:#1A1A1A; font-weight:normal;">/ Monat</span></div>
+                        <div class="price-features">
+                            <p>Zugang zur Plattform</p>
+                            <p>Bezug von 1 lokalen Erzeuger</p>
+                            <p>Automatische Netzkostenabrechnung</p>
+                        </div>
+                    </div>
+                    <button class="cta-btn" onclick="mockCheckout('Basic Plan')">Abo abschließen</button>
+                </div>
+                
+                <div class="price-card" style="border: 2px solid var(--primary-color);">
+                    <div>
+                        <h3>Plus Plan</h3>
+                        <div class="price-display">5,90 € <span style="font-size:1rem; color:#1A1A1A; font-weight:normal;">/ Monat</span></div>
+                        <div class="price-features">
+                            <p>Bis zu 5 Erzeuger parallel</p>
+                            <p>Live-Verbrauchshistorie einsehen</p>
+                            <p>SMS-Benachrichtigung bei Preiswechsel</p>
+                        </div>
+                    </div>
+                    <button class="cta-btn" onclick="mockCheckout('Plus Plan')">Abo abschließen</button>
+                </div>
+                
+                <div class="price-card">
+                    <div>
+                        <h3>Pro Plan</h3>
+                        <div class="price-display">9,90 € <span style="font-size:1rem; color:#1A1A1A; font-weight:normal;">/ Monat</span></div>
+                        <div class="price-features">
+                            <p>Unbegrenzte Erzeugerwahl</p>
+                            <p>API-Zugang für eigene Heimautomation</p>
+                            <p>Automatischer Export für die Steuer</p>
+                        </div>
+                    </div>
+                    <button class="cta-btn" onclick="mockCheckout('Pro Plan')">Abo abschließen</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="content-section" aria-label="Über uns und Marken">
+            <h1>Wer wir sind und unsere Marken</h1>
+            <p>Hinter SolarFreund steht ein kleines Team aus Wien. Wir wollen den Energieeinkauf verständlicher machen. Da wir unseren Namen, unsere Software und unser Design rechtlich absichern müssen, haben wir drei verschiedene Markenformen eingetragen.</p>
+
+            <h2>Unsere registrierten Markenformen</h2>
+            
+            <h3>1. Wortbildmarke</h3>
+            <p>Unser geschütztes Markenzeichen kombiniert unser grafisches Logo mit dem festen Schriftzug. Es dient als eindeutiger Herkunftshinweis für unsere Dienstleistungen und Softwareprodukte auf allen Endgeräten.</p>
+            
+            <div style="margin:15px 0; padding:15px 20px; border:1px solid var(--border-color); display:inline-block; border-radius: 8px; background-color: var(--box-bg);">
+                <img src="Logo.png" alt="Wortbildmarke SolarFreund Logo" style="height: 48px; width: auto; vertical-align: middle;">
+                <strong style="font-size:2rem; vertical-align: middle; margin-left:15px; color: var(--primary-color);">SolarFreund®</strong>
+            </div>
+
+            <h3>2. Farbmarke</h3>
+            <p>Wir haben die spezifische Farbkombination aus unserem Marineblau (Hex #103B7C) und unserem kontraststarken Ocker (Hex #8C6320) rechtlich als Kennzeichen für Benutzeroberflächen im Energiebereich schützen lassen.</p>
+
+            <h3>3. Klangmarke</h3>
+            <p>Wenn man in unserer App erfolgreich den Stromanbieter wechselt, ertönt ein kurzes, klares akustisches Signal (Beep). Dieser Ton bestätigt die Aktion sofort im Hintergrund, ohne dich mit langen Ladebalken aufzuhalten.</p>
+            
+            <div style="margin-top:10px;">
+                <audio id="klangmarke-audio" controls aria-label="SolarFreund Klangmarke Audio-Logo" aria-describedby="audio-desc-1">
+                    <source src="https://upload.wikimedia.org/wikipedia/commons/0/05/Beep-09.ogg" type="audio/ogg">
+                    Dein Browser unterstützt das Audio-Element nicht.
+                </audio>
+                <div id="audio-desc-1" class="audio-transcript">
+                    <strong>Audio-Transkript:</strong> Es ertönt ein einzelner, kurzer und hoher Bestätigungston (elektronischer Beep) von etwa einer halben Sekunde Länge.
+                </div>
+            </div>
+
+            <h2>Nizza-Klassifikation</h2>
+            <h3>Klasse 35: Werbung und Geschäftsführung</h3>
+            <p>Wir vermitteln Verträge für den Bezug von Strom, stellen den Online-Marktplatz für private Stromerzeuger und Abnehmer bereit und übernehmen die monatliche Abrechnung.</p>
+
+            <h3>Klasse 38: Telekommunikation und Online-Plattformbetrieb</h3>
+            <p>Wir betreiben eine Online-Plattform, über die Nutzer in Echtzeit Daten aus ihrem Smart-Meter abrufen und Kommunikation zwischen Stromerzeugern und Abnehmern herstellen können.</p>
+
+            <h3>Klasse 42: Technologische Dienstleistungen</h3>
+            <p>Wir entwickeln und betreiben die Softwareplattform zur Auswertung der Smart-Meter-Daten und zur Verteilung des Stroms.</p>
+
+            <h2>Urheberrecht und genutzte Medien</h2>
+            <p>Sämtliche Inhalte auf dieser Website haben wir entweder selbst erstellt oder nutzen sie mit den entsprechenden Rechten:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medienart</th>
+                        <th>Quelle</th>
+                        <th>Rechte und Lizenz</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Texte</td>
+                        <td>Eigenes Team</td>
+                        <td>Alle Verwertungsrechte liegen bei uns.</td>
+                    </tr>
+                    <tr>
+                        <td>Bilder (Logo.png)</td>
+                        <td>Erstellt mit Canva (canva.com)</td>
+                        <td>Das Logo wurde mit dem Online-Designtool Canva erstellt. Gemäß den Canva-Nutzungsbedingungen (Content License Agreement) dürfen mit Canva erstellte Designs kommerziell genutzt und als eigene Werke veröffentlicht werden. Die Nutzungs- und Verwertungsrechte für das fertige Logo liegen beim Unternehmen.</td>
+                    </tr>
+                    <tr>
+                        <td>Schriftart</td>
+                        <td>Systemschrift (Arial)</td>
+                        <td>Systemschrift, keine separate Lizenz erforderlich.</td>
+                    </tr>
+                    <tr>
+                        <td>Audio (Ton)</td>
+                        <td>Wikimedia Commons (Beep-09.ogg)</td>
+                        <td>CC0 1.0 / Gemeinfrei (Public Domain). Nutzung als geschützte App-Klangmarke.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="lizenz" class="content-section" aria-label="Nutzungsrechte und Lizenzen">
+            <h1>Nutzungsrechte und Lizenzen</h1>
+            <p>Wenn du bei uns ein Abo abschließt, kaufst du nicht die Software selbst, sondern das Recht, unsere Plattform für die Dauer deines Tarifs zu nutzen. Hier sind die genauen Regeln.</p>
+
+            <h2>Lizenzgewährung</h2>
+            <p>Wir geben dir ein einfaches, nicht übertragbares Recht, dich in unser Dashboard einzuloggen und die Funktionen deines gewählten Abos zu verwenden. Sobald das Abo endet, erlischt auch dieser Zugang.</p>
+
+            <h2>Übertragene und verbleibende Rechte</h2>
+            <h3>Was du darfst</h3>
+            <ul>
+                <li>Deine persönlichen Verbrauchsdaten im Dashboard abrufen und analysieren.</li>
+                <li>Den automatischen Wechsel zwischen lokalen Stromanbietern nutzen.</li>
+                <li>Deine Rechnungen und Daten für die eigene Steuererklärung exportieren.</li>
+            </ul>
+
+            <h3>Was bei uns bleibt</h3>
+            <ul>
+                <li>Sämtliche Rechte am Quellcode, am Design und an den Datenbanken gehören ausnahmslos uns.</li>
+                <li>Wir behalten uns das Recht vor, anonymisierte Verbrauchsdaten auszuwerten, um die Auslastung der Plattform zu verbessern.</li>
+            </ul>
+
+            <h2>Beschränkungen</h2>
+            <p>Du darfst unsere Software nicht kopieren, verändern oder versuchen, den Quellcode auszulesen. Die Weitergabe deines Logins an Dritte oder der Versuch, das Stromnetz über unsere Schnittstellen zu manipulieren, führt zur sofortigen Sperrung.</p>
+
+            <h2>Haftungsbeschränkungen</h2>
+            <p>Wir haften für Schäden nur, wenn wir sie vorsätzlich oder grob fahrlässig verursacht haben. Bei leichter Fahrlässigkeit schließen wir die Haftung aus, es sei denn, es geht um Personenschäden. Ein wichtiger Punkt: Wir stellen ausschließlich die Software für die Abrechnung bereit. Wenn bei dir das Licht ausgeht, das Stromnetz schwankt oder ein Kabel reißt, ist dafür der jeweilige physische Netzbetreiber verantwortlich. Für solche Netzausfälle übernehmen wir keine Haftung.</p>
+        </section>
+
+        <section id="datenschutz" class="content-section" aria-label="Datenschutz">
+            <h1>Datenschutz</h1>
+            <p>Wir erheben nur die Daten, die wir wirklich brauchen, damit die Abrechnung und das Dashboard funktionieren. Datenverkauf an Dritte gibt es bei uns nicht.</p>
+
+            <h2>Verantwortlicher für die Datenverarbeitung</h2>
+            <p>SolarFreund GmbH<br>
+            Göllnergasse 29/22, 1030 Wien, Österreich<br>
+            E-Mail: datenschutz@solarfreund.at</p>
+
+            <h2>Kontaktdaten der Datenschutzbeauftragten</h2>
+            <p>Mag. Clara Datenwart<br>
+            E-Mail: dpo@solarfreund.at<br>
+            Tel: +43 1 555 2025-99</p>
+
+            <h2>Verarbeitete Datenkategorien</h2>
+            <p>Für die Vertragserfüllung und den Betrieb verarbeiten wir genau diese fünf Kategorien von Daten:</p>
+            <ol>
+                <li>Stammdaten wie Vorname, Nachname oder den Firmennamen.</li>
+                <li>Kontaktdaten, genauer gesagt Anschrift, Rechnungsadresse, Telefonnummer und E-Mail.</li>
+                <li>Zahlungsdaten wie IBAN und den Status der monatlichen Abbuchungen.</li>
+                <li>Technische Messdaten, also die 33-stellige Zählpunktnummer und die viertelstündlichen Werte des Smart-Meters.</li>
+                <li>Nutzungsdaten wie die IP-Adresse beim Login und die gewählten Cookie-Einstellungen.</li>
+            </ol>
+
+            <h2>Rechtsgrundlage und Zweck der Datenverarbeitung</h2>
+            <ul>
+                <li>Vertragserfüllung nach Art. 6 Abs. 1 lit. b DSGVO: Notwendig, um die Strommengen zuzuordnen und monatlich abzurechnen.</li>
+                <li>Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO: Gilt für die optionalen Statistik-Cookies.</li>
+                <li>Berechtigtes Interesse nach Art. 6 Abs. 1 lit. f DSGVO: Gilt für die Bearbeitung von Anfragen über das Kontaktformular.</li>
+                <li>Gesetzliche Pflicht nach Art. 6 Abs. 1 lit. c DSGVO: Wir müssen Rechnungen für das Finanzamt sieben Jahre lang aufbewahren.</li>
+            </ul>
+
+            <h2>Eingesetzte Cookies</h2>
+            <p>Wir nutzen drei spezifische Cookies. Zweck und Dauer sind hier festgelegt:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Zweck</th>
+                        <th>Speicherdauer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>sf_session</code></td>
+                        <td>Hält dich im Dashboard eingeloggt.</td>
+                        <td>Ende der Browsersitzung</td>
+                    </tr>
+                    <tr>
+                        <td><code>sf_consent</code></td>
+                        <td>Merkt sich, ob du den Cookie-Banner bestätigt hast.</td>
+                        <td>1 Jahr</td>
+                    </tr>
+                    <tr>
+                        <td><code>sf_analytics</code></td>
+                        <td>Anonyme Statistik, um zu sehen, wo Nutzer beim Checkout abbrechen.</td>
+                        <td>30 Tage</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="kontakt" class="content-section" aria-label="Kontakt und Impressum">
+            <h1>Kontakt und Impressum</h1>
+            
+            <h2>Schreib uns eine Nachricht</h2>
+            <form onsubmit="submitContactForm(event)" class="contact-form">
+                <div class="form-group">
+                    <label for="name">Dein Name:</label>
+                    <input type="text" id="name" required placeholder="z. B. Anna Müller">
+                </div>
+                <div class="form-group">
+                    <label for="email">Deine E-Mail:</label>
+                    <input type="email" id="email" required placeholder="z. B. anna@beispiel.at">
+                </div>
+                <div class="form-group">
+                    <label for="message">Deine Nachricht:</label>
+                    <textarea id="message" rows="4" required placeholder="Wie können wir dir helfen?"></textarea>
+                </div>
+                <button type="submit" class="cta-btn">Nachricht absenden</button>
+            </form>
+
+            <h2>Impressum</h2>
+            <p>Angaben gemäß § 5 ECG und § 24 MedienG.</p>
+
+            <p><strong>Medieninhaber und Dienstanbieter:</strong><br>
+            SolarFreund GmbH</p>
+
+            <p><strong>Geschäftsanschrift:</strong><br>
+            Göllnergasse 29/22, 1030 Wien, Österreich</p>
+
+            <p><strong>Kontakt:</strong><br>
+            Telefon: +43 1 555 2025<br>
+            E-Mail: office@solarfreund.at</p>
+
+            <p><strong>Registrierung:</strong><br>
+            Firmenbuchnummer: FN 123456a<br>
+            Handelsgericht Wien<br>
+            UID-Nummer: ATU65432100</p>
+
+            <p><strong>Kammerzugehörigkeit:</strong><br>
+            Mitglied der Wirtschaftskammer Wien (WKW)<br>
+            Fachgruppe: Unternehmensberatung, Buchhaltung und Informationstechnologie (UBIT)</p>
+
+            <p><strong>Vorschriften:</strong><br>
+            Gewerbeordnung und E-Commerce-Gesetz, abrufbar unter www.ris.bka.gv.at</p>
+
+            <p><strong>Unternehmensgegenstand:</strong><br>
+            Dienstleistungen in der Informationstechnik sowie der Betrieb einer Plattform zur Energievermittlung.</p>
+
+            <p><strong>Geschäftsführung:</strong><br>
+            Daniel Wlach</p>
+        </section>
+
+        <section id="barrierefreiheit" class="content-section" aria-label="Barrierefreiheitserklärung">
+            <h1>Barrierefreiheit</h1>
+            
+            <h2>Erklärung zur Barrierefreiheit</h2>
+            <p>Wir wollen, dass jeder unsere Plattform ohne Hürden nutzen kann. Deshalb haben wir die Seite so programmiert, dass sie den Anforderungen des Web-Zugänglichkeits-Gesetzes (WZG) und den Richtlinien WCAG 2.2 im Level AA entspricht.</p>
+
+            <h2>Stand der Vereinbarkeit mit den Anforderungen</h2>
+            <p>Diese Website ist <strong>teilweise konform</strong> mit den Anforderungen der WCAG 2.2 auf Konformitätsstufe AA. Wir testen unseren Code regelmäßig mit der WAVE Chrome Extension und den AXE DevTools.</p>
+
+            <h2>Nicht barrierefreie Inhalte</h2>
+            <p>Folgende bekannte Einschränkungen bestehen derzeit noch:</p>
+            <ul>
+                <li><strong>Fehlermeldungen im Kontaktformular:</strong> Wenn du ein Feld falsch ausfüllst, erscheint zwar ein Hinweis, aber dieser wird von Screenreadern noch nicht automatisch vorgelesen. Wir arbeiten daran. Geplante Behebung: nächstes Release.</li>
+                <li><strong>Cookie-Banner:</strong> Der Banner lässt sich mit der Tastatur bedienen, ist aber noch nicht vollständig in die normale Tab-Reihenfolge der Seite eingebunden. Geplante Behebung: nächstes Release.</li>
+            </ul>
+
+            <h2>Erstellung dieser Erklärung zur Barrierefreiheit</h2>
+            <p>Diese Erklärung haben wir am 10. Mai 2026 nach einem vollständigen internen Audit der HTML-Struktur erstellt.</p>
+
+            <h2>Feedback und Kontaktangaben</h2>
+            <p>Falls du an einer Stelle der Seite Probleme mit der Lesbarkeit oder Bedienung hast, sag uns einfach Bescheid. Wir schauen uns das an und korrigieren den Code.<br>
+            E-Mail: barrierefrei@solarfreund.at<br>
+            Telefon: +43 1 555 2025-88</p>
+
+            <h2>Durchsetzungsverfahren</h2>
+            <p>Wenn du mit unserer Antwort auf dein Feedback nicht zufrieden bist, kannst du dich an die offizielle Beschwerdestelle der Österreichischen Forschungsförderungsgesellschaft (FFG) wenden:<br>
+            Website: www.ffg.at/barrierefreiheit/beschwerdestelle</p>
+        </section>
+    </main>
+
+    <div id="cookie-banner" role="region" aria-label="Cookie Einwilligung" aria-live="polite">
+        <p><span style="font-weight: bold;">Kurzer Hinweis:</span> Wir nutzen notwendige Cookies für den Login und Matomo-Statistiken (30 Tage Speicherdauer), um Fehler auf der Seite zu finden. Details stehen im Datenschutz.</p>
+        <div>
+            <button onclick="acceptCookies()">Akzeptieren</button>
+            <button onclick="acceptEssentialOnly()">Nur notwendige</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 SolarFreund GmbH. Alle Rechte vorbehalten.</p>
+        <p style="margin-top:10px;">
+            <a href="#kontakt" onclick="switchTab('kontakt')">Impressum & Kontakt</a> | 
+            <a href="#datenschutz" onclick="switchTab('datenschutz')">Datenschutz</a> | 
+            <a href="#barrierefreiheit" onclick="switchTab('barrierefreiheit')">Barrierefreiheitserklärung</a>
+        </p>
+    </footer>
+
+    <script>
+        function switchTab(targetId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+                link.removeAttribute('aria-current');
+            });
+
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            const activeLink = document.querySelector(`nav a[href="#${targetId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+                activeLink.setAttribute('aria-current', 'page');
+            }
+            
+            window.scrollTo(0, 0);
+        }
+
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    const targetId = href.substring(1);
+                    switchTab(targetId);
+                    history.pushState(null, null, href);
+                }
+            });
+        });
+
+        window.addEventListener('popstate', () => {
+            const hash = window.location.hash.substring(1) || 'startseite';
+            switchTab(hash);
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                switchTab(hash);
+            }
+        });
+
+        function mockCheckout(planName) {
+            alert(`Danke für dein Interesse am "${planName}"!\n\n(Test-Simulation): Hier würdest du jetzt zu Stripe weitergeleitet werden, wo wir deine Zahlungsdaten und die Zählpunktnummer erfassen.`);
+        }
+
+        function submitContactForm(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            alert(`Danke für deine Nachricht, ${name}!\n\nWir haben die Daten gespeichert und melden uns bei dir.`);
+            e.target.reset();
+        }
+
+        function acceptCookies() {
+            document.getElementById('cookie-banner').style.display = 'none';
+            alert("Cookies wurden bestätigt.");
+        }
+
+        function acceptEssentialOnly() {
+            document.getElementById('cookie-banner').style.display = 'none';
+            alert("Nur notwendige Cookies wurden akzeptiert. Das Statistik-Cookie (sf_analytics) wird nicht gesetzt.");
+        }
+    </script>
+</body>
+</html>
