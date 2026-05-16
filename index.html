@@ -74,23 +74,49 @@
             list-style: none;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 4px;
             flex-wrap: wrap;
             margin: 0; 
             padding: 0;
+            /* role="list" keeps screen-reader semantics even with CSS list-style:none */
         }
 
         nav a {
             color: #FFFFFF;
             text-decoration: none;
-            font-weight: 600;
-            padding: 0.5rem;
+            font-weight: 500;
+            padding: 0.4rem 0.75rem;
             display: inline-block;
+            border-radius: 6px;
+            letter-spacing: 0.01em;
+            transition: background-color 0.15s;
+            position: relative;
         }
 
-        nav a:hover, nav a.active {
-            text-decoration: underline;
-            text-decoration-thickness: 3px;
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0.75rem;
+            right: 0.75rem;
+            height: 2px;
+            background-color: rgba(255,255,255,0);
+            border-radius: 2px;
+            transition: background-color 0.15s;
+        }
+
+        nav a:hover {
+            background-color: rgba(255,255,255,0.12);
+        }
+
+        nav a.active {
+            background-color: rgba(255,255,255,0.18);
+            font-weight: 700;
+        }
+
+        nav a.active::after,
+        nav a:hover::after {
+            background-color: rgba(255,255,255,0.7);
         }
 
         main {
@@ -201,7 +227,41 @@
             background-color: #FFFFFF;
         }
 
-        .audio-transcript {
+        .hero-img {
+            float: right;
+            width: 42%;
+            max-width: 420px;
+            border-radius: 10px;
+            margin: 0 0 0.8rem 1.8rem;
+            display: block;
+            background-color: #0d6ebc;
+        }
+
+        .hero-img-caption {
+            float: right;
+            clear: right;
+            font-size: 0.75rem;
+            color: #595959;
+            margin: 0 0 0.8rem 0;
+            text-align: right;
+            width: 42%;
+            max-width: 420px;
+        }
+
+        .hero-clearfix::after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+
+        .hero-img-caption a {
+            color: #595959;
+            text-decoration: none;
+            border-bottom: 1px dotted #888;
+        }
+
+        .hero-img-caption a:hover {
+            color: var(--primary-color);
             font-size: 0.95rem;
             color: var(--text-color);
             margin-top: 8px;
@@ -213,32 +273,71 @@
 
         #cookie-banner {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: #1A1A1A;
-            color: #FFFFFF;
-            padding: 1.5rem;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 3rem);
+            max-width: 860px;
+            background-color: #FFFFFF;
+            color: var(--text-color);
+            padding: 1.4rem 1.8rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 1rem;
             z-index: 1000;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.14);
         }
-        
-        /* Button nutzt jetzt sauberes Marineblau für garantierten AXE-Kontrast (> 8:1) */
+
+        #cookie-banner .cookie-text {
+            flex: 1;
+            min-width: 200px;
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        #cookie-banner .cookie-text strong {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+            color: var(--primary-color);
+        }
+
+        #cookie-banner .cookie-actions {
+            display: flex;
+            gap: 0.6rem;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+
         #cookie-banner button {
+            padding: 0.55rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid var(--primary-color);
+            transition: background-color 0.15s, color 0.15s;
+        }
+
+        #cookie-banner .btn-accept {
             background-color: var(--primary-color);
             color: #FFFFFF;
-            border: 1px solid #FFFFFF;
-            padding: 8px 16px;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
         }
-        #cookie-banner button:hover {
+        #cookie-banner .btn-accept:hover {
             background-color: #0c2a59;
+            border-color: #0c2a59;
+        }
+
+        #cookie-banner .btn-essential {
+            background-color: transparent;
+            color: var(--primary-color);
+        }
+        #cookie-banner .btn-essential:hover {
+            background-color: var(--bg-color);
         }
 
         footer {
@@ -273,9 +372,7 @@
             top: 0;
         }
 
-        #cookie-banner button + button {
-            margin-left: 8px;
-        }
+
     </style>
 </head>
 <body>
@@ -289,12 +386,12 @@
                 SolarFreund
             </a>
             <nav aria-label="Hauptnavigation">
-                <ul>
-                    <li><a href="#startseite" class="nav-link active" aria-current="page">Startseite & Shop</a></li>
+                <ul role="list">
+                    <li><a href="#startseite" class="nav-link active" aria-current="page">Startseite &amp; Shop</a></li>
                     <li><a href="#about" class="nav-link">Über uns (Marken)</a></li>
                     <li><a href="#lizenz" class="nav-link">Lizenzen</a></li>
                     <li><a href="#datenschutz" class="nav-link">Datenschutz</a></li>
-                    <li><a href="#kontakt" class="nav-link">Kontakt & Impressum</a></li>
+                    <li><a href="#kontakt" class="nav-link">Kontakt &amp; Impressum</a></li>
                     <li><a href="#barrierefreiheit" class="nav-link">Barrierefreiheit</a></li>
                 </ul>
             </nav>
@@ -302,18 +399,25 @@
     </header>
 
     <main id="main-content">
-        <section id="startseite" class="content-section active" aria-label="Startseite und Shop">
-            <h1>Strom direkt vom Nachbarn beziehen</h1>
-            
-            <p>Die meisten Menschen kennen das Problem: Man zahlt jeden Monat viel Geld an einen großen, anonymen Stromkonzern, weiß aber eigentlich gar nicht genau, wo die Energie überhaupt herkommt. Gleichzeitig haben immer mehr Leute in der eigenen Nachbarschaft Solaranlagen auf dem Dach und produzieren oft mehr Strom, als sie selbst verbrauchen können.</p>
-            
-            <p>Genau hier setzt SolarFreund an. Wir haben eine Plattform gebaut, die dich direkt mit privaten Erzeugern aus deiner Umgebung vernetzt. Statt anonymem Mix-Strom kaufst du regionalen Solarstrom von echten Menschen. Die Zuteilung und die exakte viertelstündliche Abrechnung regeln wir vollautomatisch im Hintergrund. Alles, was du dafür brauchst, ist der Smart-Meter, der ohnehin in deinem Keller hängt. Du musst keine neuen Kabel verlegen und brauchst auch keinen Techniker.</p>
 
-            <h2>Deine Vorteile auf einen Blick</h2>
+        <!-- ===================== STARTSEITE ===================== -->
+        <section id="startseite" class="content-section active" aria-label="Startseite und Shop">
+            <h1>Strom direkt vom Nachbarn kaufen</h1>
+
+            <div class="hero-clearfix">
+                <img src="solar-bild.png" alt="Illustration einer Solaranlage in einer grünen Landschaft mit Windkraft im Hintergrund" class="hero-img">
+                <p class="hero-img-caption">Bild: <a href="https://pixabay.com/users/elf-moondance-19728901/" target="_blank" rel="noopener">Moondance</a> / <a href="https://pixabay.com/" target="_blank" rel="noopener">Pixabay</a> — Pixabay-Lizenz</p>
+
+                <p>Die meisten zahlen jeden Monat viel Geld an einen großen Stromkonzern und wissen dabei eigentlich nicht, wo die Energie herkommt. Gleichzeitig haben immer mehr Leute in der Nachbarschaft Solaranlagen auf dem Dach und produzieren oft mehr Strom, als sie selbst verbrauchen.</p>
+                
+                <p>Genau das wollten wir ändern. SolarFreund verbindet dich direkt mit privaten Erzeugern aus deiner Umgebung. Statt anonymem Mixstrom bekommst du regionalen Solarstrom von echten Menschen. Die Zuteilung und die viertelstündliche Abrechnung laufen vollautomatisch im Hintergrund. Du brauchst nur den Smart-Meter, der ohnehin in deinem Keller hängt. Keine neuen Kabel, kein Techniker.</p>
+            </div>
+
+            <h2>Was du davon hast</h2>
             <ul>
-                <li><strong>Das Geld bleibt in der Region:</strong> Du bezahlst faire Preise direkt an Familien oder Kleinbetriebe in deiner Nähe, statt die Margen von Zwischenhändlern zu finanzieren.</li>
-                <li><strong>Volle Transparenz:</strong> Du siehst in unserem Dashboard genau, wie viel Cent pro Kilowattstunde an den Erzeuger gehen und wie hoch die reinen Netzkosten sind.</li>
-                <li><strong>Keine Knebelverträge:</strong> Unsere Software-Abos sind monatlich kündbar. Wenn du unzufrieden bist oder umziehst, bist du mit einem Klick wieder raus.</li>
+                <li><strong>Das Geld bleibt in der Region:</strong> Du zahlst faire Preise direkt an Familien oder Kleinbetriebe in deiner Nähe, statt die Marge von Zwischenhändlern zu finanzieren.</li>
+                <li><strong>Volle Transparenz:</strong> Im Dashboard siehst du genau, wie viel Cent pro Kilowattstunde an den Erzeuger gehen und wie hoch die reinen Netzkosten sind.</li>
+                <li><strong>Keine Knebelverträge:</strong> Unsere Abos sind monatlich kündbar. Wenn du unzufrieden bist oder umziehst, bist du mit einem Klick wieder raus.</li>
             </ul>
             
             <h2>Wähle dein passendes Dashboard-Abo</h2>
@@ -359,14 +463,15 @@
             </div>
         </section>
 
+        <!-- ===================== ABOUT / MARKEN ===================== -->
         <section id="about" class="content-section" aria-label="Über uns und Marken">
             <h1>Wer wir sind und unsere Marken</h1>
-            <p>Hinter SolarFreund steht ein kleines Team aus Wien. Wir wollen den Energieeinkauf verständlicher machen. Da wir unseren Namen, unsere Software und unser Design rechtlich absichern müssen, haben wir drei verschiedene Markenformen eingetragen.</p>
+            <p>Hinter SolarFreund steckt ein kleines Team aus Wien. Wir wollten den Energieeinkauf verständlicher machen. Damit wir unseren Namen, die Software und das Design rechtlich absichern können, haben wir drei verschiedene Markenformen angemeldet.</p>
 
-            <h2>Unsere registrierten Markenformen</h2>
+            <h2>Unsere Markenformen</h2>
             
             <h3>1. Wortbildmarke</h3>
-            <p>Unser geschütztes Markenzeichen kombiniert unser grafisches Logo mit dem festen Schriftzug. Es dient als eindeutiger Herkunftshinweis für unsere Dienstleistungen und Softwareprodukte auf allen Endgeräten.</p>
+            <p>Unser eingetragenes Markenzeichen kombiniert das grafische Logo mit dem festen Schriftzug „SolarFreund“. Es dient als Herkunftshinweis für unsere Dienstleistungen und Softwareprodukte auf allen Endgeräten.</p>
             
             <div style="margin:15px 0; padding:15px 20px; border:1px solid var(--border-color); display:inline-block; border-radius: 8px; background-color: var(--box-bg);">
                 <img src="Logo.png" alt="Wortbildmarke SolarFreund Logo" style="height: 48px; width: auto; vertical-align: middle;">
@@ -374,10 +479,10 @@
             </div>
 
             <h3>2. Farbmarke</h3>
-            <p>Wir haben die spezifische Farbkombination aus unserem Marineblau (Hex #103B7C) und unserem kontraststarken Ocker (Hex #8C6320) rechtlich als Kennzeichen für Benutzeroberflächen im Energiebereich schützen lassen.</p>
+            <p>Wir haben die Farbkombination aus Marineblau (Hex #103B7C) und Ocker (Hex #8C6320) als Kennzeichen für Benutzeroberflächen im Energiebereich schützen lassen. Diese Farben tauchen in unserer App, auf der Website und in allen Marketingmaterialien konsistent auf.</p>
 
             <h3>3. Klangmarke</h3>
-            <p>Wenn man in unserer App erfolgreich den Stromanbieter wechselt, ertönt ein kurzes, klares akustisches Signal (Beep). Dieser Ton bestätigt die Aktion sofort im Hintergrund, ohne dich mit langen Ladebalken aufzuhalten.</p>
+            <p>Bei einem erfolgreichen Anbieterwechsel in unserer App ertönt ein kurzes, klares akustisches Signal. Der Ton bestätigt die Aktion sofort und ohne Ladebalken.</p>
             
             <div style="margin-top:10px;">
                 <audio id="klangmarke-audio" controls aria-label="SolarFreund Klangmarke Audio-Logo" aria-describedby="audio-desc-1">
@@ -385,26 +490,29 @@
                     Dein Browser unterstützt das Audio-Element nicht.
                 </audio>
                 <div id="audio-desc-1" class="audio-transcript">
-                    <strong>Audio-Transkript:</strong> Es ertönt ein kurzer, heller Bestätigungston von etwa zwei Sekunden Länge, der eine erfolgreich abgeschlossene Aktion signalisiert.
+                    <strong>Audio-Transkript:</strong> Ein kurzer, heller Bestätigungston von etwa zwei Sekunden Länge, der eine erfolgreich abgeschlossene Aktion signalisiert.
                 </div>
             </div>
 
             <h2>Nizza-Klassifikation</h2>
-            <h3>Klasse 35: Werbung und Geschäftsführung</h3>
-            <p>Wir vermitteln Verträge für den Bezug von Strom, stellen den Online-Marktplatz für private Stromerzeuger und Abnehmer bereit und übernehmen die monatliche Abrechnung.</p>
+            <h3>Klasse 35: Werbung; Geschäftsführung; Unternehmensverwaltung</h3>
+            <p>Darunter fällt der Betrieb unseres Online-Marktplatzes, über den private Stromerzeuger und Abnehmer Verträge abschließen, sowie die monatliche Abrechnung der vermittelten Strommengen.</p>
 
-            <h3>Klasse 38: Telekommunikation und Online-Plattformbetrieb</h3>
-            <p>Wir betreiben eine Online-Plattform, über die Nutzer in Echtzeit Daten aus ihrem Smart-Meter abrufen und Kommunikation zwischen Stromerzeugern und Abnehmern herstellen können.</p>
+            <h3>Klasse 38: Telekommunikation</h3>
+            <p>Darunter fällt der Betrieb der Online-Plattform, über die Nutzer in Echtzeit Smart-Meter-Daten abrufen und Kommunikation zwischen Erzeugern und Abnehmern stattfindet.</p>
 
-            <h3>Klasse 42: Technologische Dienstleistungen</h3>
-            <p>Wir entwickeln und betreiben die Softwareplattform zur Auswertung der Smart-Meter-Daten und zur Verteilung des Stroms.</p>
+            <h3>Klasse 39: Transportdienstleistungen; Verpackung und Lagerung von Waren; Veranstaltung von Reisen</h3>
+            <p>Darunter fällt die Vermittlung der Verteilung von lokal erzeugtem Solarstrom zwischen privaten Erzeugern und Abnehmern. Unsere Plattform koordiniert automatisch die viertelstündliche Zuteilung der Strommengen auf Basis der Smart-Meter-Daten und übernimmt damit eine vermittelnde Funktion im Bereich der Energieverteilung.</p>
+
+            <h3>Klasse 42: Wissenschaftliche und technologische Dienstleistungen</h3>
+            <p>Darunter fällt die Entwicklung und der Betrieb der Softwareplattform zur Auswertung von Smart-Meter-Daten und zur automatischen Zuteilung der Strommengen.</p>
 
             <h2>Markenrecherche</h2>
-            <p>Alle drei Markenformen wurden vor der Verwendung auf Kollisionen geprüft. Dafür haben wir TMview, EUIPO eSearch und das österreichische Markenregister verwendet (Stand: Mai 2026).</p>
-            <p>Bei der Recherche wurde die ähnliche Marke "Solarfreunde" (Solarfreunde GmbH, Deutschland, Klassen 35, 37, 39) gefunden. Da diese Marke ausschließlich in Deutschland eingetragen ist und unser Unternehmen ausschließlich in Österreich tätig ist, besteht nach unserer Einschätzung kein unmittelbarer Konflikt.</p>
+            <p>Alle drei Markenformen wurden vor der Verwendung auf Kollisionen geprüft. Dabei haben wir TMview, EUIPO eSearch und das österreichische Markenregister genutzt (Stand: Mai 2026).</p>
+            <p>Bei der Recherche ist die nationale deutsche Marke „Solarfreunde“ der Solarfreunde GmbH aufgetaucht, eingetragen im DPMA in den Klassen 35, 37 und 39. Es handelt sich ausdrücklich um eine rein nationale DE-Marke, keine EU-Gemeinschaftsmarke (EUTM). Da unser Unternehmen ausschließlich in Österreich tätig ist und die Marke im DPMA nur territorial für Deutschland gilt, besteht nach unserer Einschätzung kein unmittelbarer Kollisionsfall. Wir beobachten die Situation weiterhin.</p>
 
-            <h2>Urheberrecht und genutzte Medien</h2>
-            <p>Sämtliche Inhalte auf dieser Website haben wir entweder selbst erstellt oder nutzen sie mit den entsprechenden Rechten:</p>
+            <h2>Urheberrecht und verwendete Medien</h2>
+            <p>Alle Inhalte auf dieser Website haben wir entweder selbst erstellt oder nutzen sie auf Basis der entsprechenden Lizenzen:</p>
             <table>
                 <thead>
                     <tr>
@@ -417,89 +525,112 @@
                     <tr>
                         <td>Texte</td>
                         <td>Eigenes Team</td>
-                        <td>Alle Verwertungsrechte liegen bei uns.</td>
+                        <td>Alle Verwertungsrechte liegen bei SolarFreund GmbH.</td>
                     </tr>
                     <tr>
                         <td>Bilder (Logo.png)</td>
-                        <td>Erstellt mit Canva (canva.com)</td>
-                        <td>Das Logo wurde mit dem Online-Designtool Canva erstellt. Gemäß den Canva-Nutzungsbedingungen (Content License Agreement) dürfen mit Canva erstellte Designs kommerziell genutzt und als eigene Werke veröffentlicht werden. Die Nutzungs- und Verwertungsrechte für das fertige Logo liegen beim Unternehmen.</td>
+                        <td>Erstellt mit Canva (<a href="https://www.canva.com/policies/content-license-agreement/" target="_blank" rel="noopener">canva.com – Content License Agreement</a>)</td>
+                        <td>Das Logo wurde mit dem Online-Designtool Canva erstellt. Gemäß dem Canva Content License Agreement dürfen mit Canva erstellte Designs kommerziell genutzt und als eigene Werke veröffentlicht werden. Die Nutzungs- und Verwertungsrechte für das fertige Logo liegen beim Unternehmen.</td>
                     </tr>
                     <tr>
-                        <td>Schriftart</td>
-                        <td>Systemschrift (Arial)</td>
-                        <td>Systemschrift, keine separate Lizenz erforderlich.</td>
+                        <td>Bilder (solar-bild.png)</td>
+                        <td>Pixabay – <a href="https://pixabay.com/illustrations/solar-panel-energy-green-renewable-6013572/" target="_blank" rel="noopener">Illustration von Moondance</a></td>
+                        <td>Pixabay-Lizenz: kostenlose kommerzielle Nutzung, keine Namensnennung erforderlich. Attribution freiwillig angegeben.</td>
                     </tr>
                     <tr>
-                        <td>Audio (Ton)</td>
-                        <td>Wikimedia Commons – "Completion Sound 9" von Gravity Sound</td>
+                        <td>Audio (Klangmarke)</td>
+                        <td>Wikimedia Commons – „Completion Sound 9“ von Gravity Sound</td>
                         <td>Creative Commons Attribution 4.0 (CC BY 4.0). Urheber: Gravity Sound. Nutzung als Klangmarke der App bei erfolgreichem Anbieterwechsel.</td>
                     </tr>
                 </tbody>
             </table>
         </section>
 
+        <!-- ===================== LIZENZ ===================== -->
         <section id="lizenz" class="content-section" aria-label="Nutzungsrechte und Lizenzen">
             <h1>Nutzungsrechte und Lizenzen</h1>
-            <p>Wenn du bei uns ein Abo abschließt, kaufst du nicht die Software selbst, sondern das Recht, unsere Plattform für die Dauer deines Tarifs zu nutzen. Hier sind die genauen Regeln.</p>
+            <p>Wenn du bei uns ein Abo abschließt, kaufst du nicht die Software selbst, sondern das Recht, unsere Plattform für die Dauer des Tarifs zu nutzen. Hier sind die genauen Regeln.</p>
 
             <h2>Lizenzgewährung</h2>
-            <p>Wir geben dir ein einfaches, nicht übertragbares Recht, dich in unser Dashboard einzuloggen und die Funktionen deines gewählten Abos zu verwenden. Sobald das Abo endet, erlischt auch dieser Zugang.</p>
+            <p>Wir geben dir ein einfaches, nicht übertragbares Recht, dich in unser Dashboard einzuloggen und die Funktionen deines gewählten Abos zu verwenden. Sobald das Abo endet, erlöscht dieser Zugang.</p>
 
             <h2>Übertragene und verbleibende Rechte</h2>
             <h3>Was du darfst</h3>
             <ul>
                 <li>Deine persönlichen Verbrauchsdaten im Dashboard abrufen und analysieren.</li>
-                <li>Den automatischen Wechsel zwischen lokalen Stromanbietern nutzen.</li>
+                <li>Den automatischen Wechsel zwischen lokalen Stromerzeugern nutzen.</li>
                 <li>Deine Rechnungen und Daten für die eigene Steuererklärung exportieren.</li>
             </ul>
 
             <h3>Was bei uns bleibt</h3>
             <ul>
-                <li>Sämtliche Rechte am Quellcode, am Design und an den Datenbanken gehören ausnahmslos uns.</li>
-                <li>Wir behalten uns das Recht vor, anonymisierte Verbrauchsdaten auszuwerten, um die Auslastung der Plattform zu verbessern.</li>
+                <li>Alle Rechte am Quellcode, am Design und an den Datenbanken gehören ausnahmslos SolarFreund GmbH.</li>
+                <li>Wir behalten uns das Recht vor, anonymisierte Verbrauchsdaten auszuwerten, um die Plattformauslastung zu verbessern.</li>
             </ul>
 
             <h2>Beschränkungen</h2>
-            <p>Du darfst unsere Software nicht kopieren, verändern oder versuchen, den Quellcode auszulesen. Die Weitergabe deines Logins an Dritte oder der Versuch, das Stromnetz über unsere Schnittstellen zu manipulieren, führt zur sofortigen Sperrung.</p>
+            <p>Unsere Software darf nicht kopiert, verändert oder dekompiliert werden. Die Weitergabe des eigenen Logins an Dritte oder der Versuch, das Stromnetz über unsere Schnittstellen zu manipulieren, führt zur sofortigen Sperrung des Kontos.</p>
 
             <h2>Haftungsbeschränkungen</h2>
-            <p>Wir haften für Schäden nur, wenn wir sie vorsätzlich oder grob fahrlässig verursacht haben. Bei leichter Fahrlässigkeit schließen wir die Haftung aus, es sei denn, es geht um Personenschäden. Ein wichtiger Punkt: Wir stellen ausschließlich die Software für die Abrechnung bereit. Wenn bei dir das Licht ausgeht, das Stromnetz schwankt oder ein Kabel reißt, ist dafür der jeweilige physische Netzbetreiber verantwortlich. Für solche Netzausfälle übernehmen wir keine Haftung.</p>
+            <p>Wir haften für Schäden nur, wenn wir sie vorsätzlich oder grob fahrlässig verursacht haben. Bei leichter Fahrlässigkeit schließen wir die Haftung aus, sofern es sich nicht um Personenschäden handelt. SolarFreund stellt ausschließlich die Software für die Abrechnung bereit. Netzausfälle, Stromschwankungen oder physische Kabelschäden liegen in der Verantwortung des jeweiligen Netzbetreibers. Dafür übernehmen wir keine Haftung.</p>
         </section>
 
+        <!-- ===================== DATENSCHUTZ ===================== -->
         <section id="datenschutz" class="content-section" aria-label="Datenschutz">
-            <h1>Datenschutz</h1>
-            <p>Wir erheben nur die Daten, die wir wirklich brauchen, damit die Abrechnung und das Dashboard funktionieren. Datenverkauf an Dritte gibt es bei uns nicht.</p>
+            <h1>Datenschutzerklärung</h1>
 
             <h2>Verantwortlicher für die Datenverarbeitung</h2>
             <p>SolarFreund GmbH<br>
             Göllnergasse 29/22, 1030 Wien, Österreich<br>
             E-Mail: datenschutz@solarfreund.at</p>
 
-            <h2>Kontaktdaten der Datenschutzbeauftragten</h2>
-            <p>Mag. Clara Datenwart<br>
+            <h2>Kontaktdaten des Datenschutzbeauftragten</h2>
+            <p>Daniel Wlach<br>
             E-Mail: dpo@solarfreund.at<br>
             Tel: +43 1 555 2025-99</p>
 
-            <h2>Verarbeitete Datenkategorien</h2>
-            <p>Für die Vertragserfüllung und den Betrieb verarbeiten wir genau diese fünf Kategorien von Daten:</p>
-            <ol>
-                <li>Stammdaten wie Vorname, Nachname oder den Firmennamen.</li>
-                <li>Kontaktdaten, genauer gesagt Anschrift, Rechnungsadresse, Telefonnummer und E-Mail.</li>
-                <li>Zahlungsdaten wie IBAN und den Status der monatlichen Abbuchungen.</li>
-                <li>Technische Messdaten, also die 33-stellige Zählpunktnummer und die viertelstündlichen Werte des Smart-Meters.</li>
-                <li>Nutzungsdaten wie die IP-Adresse beim Login und die gewählten Cookie-Einstellungen.</li>
-            </ol>
-
-            <h2>Rechtsgrundlage und Zweck der Datenverarbeitung</h2>
+            <h2>Datenkategorien</h2>
+            <p>Wir verarbeiten Ihre personenbezogenen Daten, die unter folgende Datenkategorien fallen:</p>
             <ul>
-                <li>Vertragserfüllung nach Art. 6 Abs. 1 lit. b DSGVO: Notwendig, um die Strommengen zuzuordnen und monatlich abzurechnen.</li>
-                <li>Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO: Gilt für die optionalen Statistik-Cookies.</li>
-                <li>Berechtigtes Interesse nach Art. 6 Abs. 1 lit. f DSGVO: Gilt für die Bearbeitung von Anfragen über das Kontaktformular.</li>
-                <li>Gesetzliche Pflicht nach Art. 6 Abs. 1 lit. c DSGVO: Wir müssen Rechnungen für das Finanzamt sieben Jahre lang aufbewahren.</li>
+                <li>Name/Firma</li>
+                <li>Geschäftsanschrift und sonstige Adressen</li>
+                <li>Kontaktdaten (Telefonnummer, E-Mail-Adresse)</li>
+                <li>Bankverbindungen (IBAN)</li>
+                <li>Bestelldaten und Abrechnungsinformationen</li>
+                <li>Technische Messdaten (Zählpunktnummer, Smart-Meter-Werte)</li>
+                <li>Nutzungsdaten (IP-Adresse, Cookie-Einstellungen)</li>
+                <li>Kundenserviceanfragen</li>
+            </ul>
+
+            <h2>Rechtmäßigkeit und Zwecke der Verarbeitung</h2>
+
+            <h3>Datenverarbeitung auf Basis Ihrer Einwilligungserklärung</h3>
+            <p>Sie haben uns Daten über sich freiwillig zur Verfügung gestellt und wir verarbeiten diese Daten auf Grundlage Ihrer <strong>Einwilligung</strong> zu folgenden Zwecken:</p>
+            <ul>
+                <li>für anonyme Nutzungsstatistiken über Matomo, um technische Fehler auf der Plattform zu finden und das Nutzungserlebnis zu verbessern.</li>
+            </ul>
+            <p>Sie können diese Einwilligung jederzeit widerrufen. Ein <strong>Widerruf</strong> hat zur Folge, dass wir Ihre Daten ab diesem Zeitpunkt zu oben genannten Zwecken nicht mehr verarbeiten. Für einen Widerruf wenden Sie sich bitte an: datenschutz@solarfreund.at</p>
+
+            <h3>Datenverarbeitung auf Basis der Vertragsabwicklung</h3>
+            <p>Die von Ihnen bereitgestellten Daten sind zur <strong>Vertragsabwicklung</strong> bzw. zur Durchführung vorvertraglicher Maßnahmen erforderlich. Ohne diese Daten können wir den Vertrag mit Ihnen nicht abschließen. Das betrifft insbesondere die Zuordnung der Strommengen aus Ihrem Smart-Meter und die monatliche Abrechnung.</p>
+
+            <h3>Datenverarbeitung auf Basis einer rechtlichen Verpflichtung</h3>
+            <p>Wir müssen Daten, die wir von Ihnen erhalten haben, aufgrund einer gesetzlichen Verpflichtung verarbeiten, und zwar zur Aufbewahrung von Rechnungen und Buchungsbelegen gemäß den steuerrechtlichen Vorschriften für einen Zeitraum von sieben Jahren.</p>
+
+            <h3>Datenverarbeitung auf Basis berechtigter Interessen</h3>
+            <p>Wir verarbeiten Daten über Sie aufgrund unserer berechtigten Interessen. Das betrifft die Bearbeitung von Anfragen, die über unser Kontaktformular eingehen, sowie die Sicherstellung des laufenden Betriebs der Plattform.</p>
+
+            <h2>Speicherdauer</h2>
+            <p>Wir <strong>speichern</strong> Ihre Daten nur solange, wie es für den jeweiligen Zweck erforderlich ist:</p>
+            <ul>
+                <li><strong>Vertragsdaten und Rechnungen:</strong> 7 Jahre nach Vertragsende.</li>
+                <li><strong>Smart-Meter-Messdaten:</strong> 13 Monate nach Erfassung, danach anonymisiert.</li>
+                <li><strong>Kontaktformular-Anfragen:</strong> 6 Monate nach Beantwortung.</li>
+                <li><strong>Log-Daten (IP-Adressen):</strong> 30 Tage.</li>
             </ul>
 
             <h2>Eingesetzte Cookies</h2>
-            <p>Wir nutzen drei spezifische Cookies. Zweck und Dauer sind hier festgelegt:</p>
+            <p>Zweck und Speicherdauer der eingesetzten Cookies sind vollständig angegeben. Rechtsgrundlage für technisch notwendige Cookies ist das berechtigte Interesse gem. § 165 Abs. 3 TKG 2021. Für das optionale Statistik-Cookie (sf_analytics) holen wir Ihre ausdrückliche Einwilligung über den Cookie-Banner ein.</p>
             <table>
                 <thead>
                     <tr>
@@ -511,23 +642,55 @@
                 <tbody>
                     <tr>
                         <td><code>sf_session</code></td>
-                        <td>Hält dich im Dashboard eingeloggt.</td>
+                        <td>Hält Sie im Dashboard eingeloggt.</td>
                         <td>Ende der Browsersitzung</td>
                     </tr>
                     <tr>
                         <td><code>sf_consent</code></td>
-                        <td>Merkt sich, ob du den Cookie-Banner bestätigt hast.</td>
+                        <td>Speichert Ihre Cookie-Entscheidung.</td>
                         <td>1 Jahr</td>
                     </tr>
                     <tr>
                         <td><code>sf_analytics</code></td>
-                        <td>Anonyme Statistik, um zu sehen, wo Nutzer beim Checkout abbrechen.</td>
+                        <td>Anonyme Nutzungsstatistik (Matomo).</td>
                         <td>30 Tage</td>
                     </tr>
                 </tbody>
             </table>
+
+            <h2>Weitergabe der Daten</h2>
+            <p>Für die Datenverarbeitung ziehen wir <strong>Auftragsverarbeiter</strong> heran.</p>
+            <p>Wir geben Ihre Daten an folgende Empfänger weiter:</p>
+            <ul>
+                <li><strong>Stripe Inc. (USA):</strong> Abwicklung der monatlichen Abo-Abbuchungen. Stripe ist unter dem EU-US Data Privacy Framework zertifiziert.</li>
+                <li><strong>Hetzner Online GmbH (Deutschland):</strong> Betrieb der Server. Verarbeitung ausschließlich innerhalb der EU.</li>
+            </ul>
+            <p>Ihre Daten werden zum Teil auch <strong>außerhalb der EU bzw. des EWR</strong> verarbeitet, und zwar in den USA (Stripe). Das angemessene Schutzniveau ergibt sich aus einem Angemessenheitsbeschluss der Europäischen Kommission.</p>
+
+            <h2>Datensicherheit</h2>
+            <p>Wir treffen technische und organisatorische Maßnahmen, um Ihre Daten vor unbefugtem Zugriff zu schützen. Dazu gehören verschlüsselte Übertragung über HTTPS, Zugriffsbeschränkungen auf Serverebene sowie regelmäßige interne Kontrollen. Im Fall einer Datenverletzung kommen wir den gesetzlichen Meldepflichten gegenüber der Datenschutzbehörde und den betroffenen Personen fristgerecht nach.</p>
+
+            <h2>Alterskontrolle und Kinder</h2>
+            <p>Unsere Plattform richtet sich ausschließlich an Erwachsene. Vor Vertragsabschluss wird eine Altersverifikation durchgeführt. Datenverarbeitungen auf Basis einer Einwilligung von Kindern unter 14 Jahren sind bei uns nicht vorgesehen und werden nicht durchgeführt.</p>
+
+            <h2>Betroffenenrechte</h2>
+            <p>Im Rahmen des Plattformbetriebs erstellen wir auf Basis Ihrer Smart-Meter-Daten und Ihrer Erzeugerauswahl ein Nutzerprofil. Dieses Profil dient ausschließlich der automatischen Zuteilung von Strommengen und der Erstellung Ihrer monatlichen Abrechnung. Es hat keine rechtliche Wirkung auf Sie und wird nicht für Werbung oder die Weitergabe an Dritte genutzt. Eine darüber hinausgehende automatisierte Entscheidungsfindung mit erheblicher Auswirkung auf Sie findet nicht statt.</p>
+            <p>Sie erreichen uns unter folgenden Kontaktdaten: datenschutz@solarfreund.at</p>
+            <p>Unseren Datenschutzbeauftragten erreichen Sie unter: dpo@solarfreund.at</p>
+
+            <h2>Rechtsbehelfsbelehrung</h2>
+            <p>Ihnen stehen die Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch zu. Dafür wenden Sie sich an uns. Wenn Sie glauben, dass die Verarbeitung Ihrer Daten gegen das Datenschutzrecht verstößt oder Ihre datenschutzrechtlichen Ansprüche sonst in einer Weise verletzt worden sind, können Sie sich bei der Aufsichtsbehörde beschweren. In Österreich ist die Datenschutzbehörde zuständig:</p>
+            <p>
+                Österreichische Datenschutzbehörde<br>
+                Barichgasse 40–42<br>
+                1030 Wien<br>
+                Telefon: +43 1 52 152-0<br>
+                E-Mail: dsb@dsb.gv.at<br>
+                Web: <a href="https://www.dsb.gv.at" target="_blank" rel="noopener">www.dsb.gv.at</a>
+            </p>
         </section>
 
+        <!-- ===================== KONTAKT & IMPRESSUM ===================== -->
         <section id="kontakt" class="content-section" aria-label="Kontakt und Impressum">
             <h1>Kontakt und Impressum</h1>
             
@@ -535,15 +698,15 @@
             <form onsubmit="submitContactForm(event)" class="contact-form">
                 <div class="form-group">
                     <label for="name">Dein Name:</label>
-                    <input type="text" id="name" required placeholder="z. B. Anna Müller">
+                    <input type="text" id="name" name="name" required placeholder="z. B. Anna Müller">
                 </div>
                 <div class="form-group">
                     <label for="email">Deine E-Mail:</label>
-                    <input type="email" id="email" required placeholder="z. B. anna@beispiel.at">
+                    <input type="email" id="email" name="email" required placeholder="z. B. anna@beispiel.at">
                 </div>
                 <div class="form-group">
                     <label for="message">Deine Nachricht:</label>
-                    <textarea id="message" rows="4" required placeholder="Wie können wir dir helfen?"></textarea>
+                    <textarea id="message" name="message" rows="4" required placeholder="Wie können wir dir helfen?"></textarea>
                 </div>
                 <button type="submit" class="cta-btn">Nachricht absenden</button>
             </form>
@@ -570,29 +733,33 @@
             Mitglied der Wirtschaftskammer Wien (WKW)<br>
             Fachgruppe: Unternehmensberatung, Buchhaltung und Informationstechnologie (UBIT)</p>
 
-            <p><strong>Vorschriften:</strong><br>
-            Gewerbeordnung und E-Commerce-Gesetz, abrufbar unter www.ris.bka.gv.at</p>
+            <p><strong>Anwendbare Vorschriften:</strong><br>
+            Gewerbeordnung (GewO) und E-Commerce-Gesetz (ECG), abrufbar unter <a href="https://www.ris.bka.gv.at" target="_blank" rel="noopener">www.ris.bka.gv.at</a></p>
 
             <p><strong>Unternehmensgegenstand:</strong><br>
-            Dienstleistungen in der Informationstechnik sowie der Betrieb einer Plattform zur Energievermittlung.</p>
+            Dienstleistungen in der Informationstechnik sowie Betrieb einer Plattform zur Energievermittlung.</p>
 
             <p><strong>Geschäftsführung:</strong><br>
             Daniel Wlach</p>
+
+            <p><strong>Grundsätzliche Richtung des Mediums:</strong><br>
+            Diese Website dient dem Vertrieb und der Beschreibung der SolarFreund-Softwareplattform zur Vermittlung von lokalem Solarstrom zwischen Privaten. Sie richtet sich an Privatpersonen und Kleinbetriebe in Österreich, die ihren Strombezug regionalisieren wollen.</p>
         </section>
 
+        <!-- ===================== BARRIEREFREIHEIT ===================== -->
         <section id="barrierefreiheit" class="content-section" aria-label="Barrierefreiheitserklärung">
             <h1>Barrierefreiheit</h1>
             
             <h2>Erklärung zur Barrierefreiheit</h2>
-            <p>Wir wollen, dass jeder unsere Plattform ohne Hürden nutzen kann. Deshalb haben wir die Seite so programmiert, dass sie den Anforderungen des Web-Zugänglichkeits-Gesetzes (WZG) und den Richtlinien WCAG 2.2 im Level AA entspricht.</p>
+            <p>Wir wollen, dass jeder unsere Plattform ohne Hürden nutzen kann. Diese Seite wurde so programmiert, dass sie den Anforderungen des Web-Zugänglichkeits-Gesetzes (WZG) und den WCAG 2.2 auf Level AA entspricht.</p>
 
             <h2>Stand der Vereinbarkeit mit den Anforderungen</h2>
-            <p>Diese Website ist <strong>teilweise konform</strong> mit den Anforderungen der WCAG 2.2 auf Konformitätsstufe AA. Wir testen unseren Code regelmäßig mit der WAVE Chrome Extension und den AXE DevTools.</p>
+            <p>Diese Website ist <strong>teilweise konform</strong> mit den WCAG 2.2 auf Konformitätsstufe AA. Wir testen den Code regelmäßig mit der WAVE Chrome Extension und den AXE DevTools.</p>
 
             <h2>Nicht barrierefreie Inhalte</h2>
-            <p>Folgende bekannte Einschränkungen bestehen derzeit noch:</p>
+            <p>Folgende Einschränkungen sind uns bekannt:</p>
             <ul>
-                <li><strong>Fehlermeldungen im Kontaktformular:</strong> Wenn du ein Feld falsch ausfüllst, erscheint zwar ein Hinweis, aber dieser wird von Screenreadern noch nicht automatisch vorgelesen. Wir arbeiten daran. Geplante Behebung: nächstes Release.</li>
+                <li><strong>Fehlermeldungen im Kontaktformular:</strong> Wenn ein Feld falsch ausgefüllt wird, erscheint ein Hinweis, der von Screenreadern aber noch nicht automatisch vorgelesen wird. Geplante Behebung: nächstes Release.</li>
                 <li><strong>Cookie-Banner:</strong> Der Banner lässt sich mit der Tastatur bedienen, ist aber noch nicht vollständig in die normale Tab-Reihenfolge der Seite eingebunden. Geplante Behebung: nächstes Release.</li>
             </ul>
 
@@ -600,28 +767,32 @@
             <p>Diese Erklärung haben wir am 10. Mai 2026 nach einem vollständigen internen Audit der HTML-Struktur erstellt.</p>
 
             <h2>Feedback und Kontaktangaben</h2>
-            <p>Falls du an einer Stelle der Seite Probleme mit der Lesbarkeit oder Bedienung hast, sag uns einfach Bescheid. Wir schauen uns das an und korrigieren den Code.<br>
+            <p>Falls du an einer Stelle der Seite Probleme mit Lesbarkeit oder Bedienung hast, meld dich einfach bei uns. Wir schauen uns das an und beheben den Fehler.<br>
             E-Mail: barrierefrei@solarfreund.at<br>
             Telefon: +43 1 555 2025-88</p>
 
             <h2>Durchsetzungsverfahren</h2>
-            <p>Wenn du mit unserer Antwort auf dein Feedback nicht zufrieden bist, kannst du dich an die offizielle Beschwerdestelle der Österreichischen Forschungsförderungsgesellschaft (FFG) wenden:<br>
-            Website: www.ffg.at/barrierefreiheit/beschwerdestelle</p>
+            <p>Wenn du mit unserer Antwort auf dein Feedback nicht zufrieden bist, kannst du dich an die Beschwerdestelle der Österreichischen Forschungsförderungsgesellschaft (FFG) wenden:<br>
+            Website: <a href="https://www.ffg.at/barrierefreiheit/beschwerdestelle" target="_blank" rel="noopener">www.ffg.at/barrierefreiheit/beschwerdestelle</a></p>
         </section>
+
     </main>
 
     <div id="cookie-banner" role="region" aria-label="Cookie Einwilligung" aria-live="polite">
-        <p><span style="font-weight: bold;">Kurzer Hinweis:</span> Wir nutzen notwendige Cookies für den Login und Matomo-Statistiken (30 Tage Speicherdauer), um Fehler auf der Seite zu finden. Details stehen im Datenschutz.</p>
-        <div>
-            <button onclick="acceptCookies()">Akzeptieren</button>
-            <button onclick="acceptEssentialOnly()">Nur notwendige</button>
+        <div class="cookie-text">
+            <strong>🍪 Cookies auf SolarFreund</strong>
+            Wir nutzen technisch notwendige Cookies für den Login sowie optionale Matomo-Statistiken (30 Tage), um die Seite zu verbessern. Details in unserer <a href="#datenschutz" onclick="switchTab('datenschutz')">Datenschutzerklärung</a>.
+        </div>
+        <div class="cookie-actions">
+            <button class="btn-essential" onclick="acceptEssentialOnly()">Nur notwendige</button>
+            <button class="btn-accept" onclick="acceptCookies()">Alle akzeptieren</button>
         </div>
     </div>
 
     <footer>
         <p>© 2026 SolarFreund GmbH. Alle Rechte vorbehalten.</p>
         <p style="margin-top:10px;">
-            <a href="#kontakt" onclick="switchTab('kontakt')">Impressum & Kontakt</a> | 
+            <a href="#kontakt" onclick="switchTab('kontakt')">Impressum &amp; Kontakt</a> | 
             <a href="#datenschutz" onclick="switchTab('datenschutz')">Datenschutz</a> | 
             <a href="#barrierefreiheit" onclick="switchTab('barrierefreiheit')">Barrierefreiheitserklärung</a>
         </p>
@@ -688,12 +859,10 @@
 
         function acceptCookies() {
             document.getElementById('cookie-banner').style.display = 'none';
-            alert("Cookies wurden bestätigt.");
         }
 
         function acceptEssentialOnly() {
             document.getElementById('cookie-banner').style.display = 'none';
-            alert("Nur notwendige Cookies wurden akzeptiert. Das Statistik-Cookie (sf_analytics) wird nicht gesetzt.");
         }
     </script>
 </body>
