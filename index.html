@@ -710,6 +710,15 @@
                     <textarea id="message" name="message" rows="4" required placeholder="Wie können wir dir helfen?"></textarea>
                 </div>
                 <button type="submit" class="cta-btn">Nachricht absenden</button>
+
+                <div class="form-group" style="display:flex; align-items:flex-start; gap:10px; margin-top:0.5rem;">
+                <input type="checkbox" id="datenschutz-consent" name="datenschutz-consent" required
+                    style="margin-top:4px; width:16px; height:16px; flex-shrink:0; cursor:pointer;">
+                <label for="datenschutz-consent" style="font-weight:normal; font-size:0.9rem; color:#444; cursor:pointer;">
+                    Hiermit stimme ich zu, dass zur Bearbeitung meiner Anfrage die angegebenen Daten verarbeitet werden.
+                    (Details siehe <a href="#datenschutz" onclick="switchTab('datenschutz')">Datenschutzerklärung</a>). <span style="color:#c00;">*</span>
+                </label>
+                </div>
             </form>
 
             <h2>Impressum</h2>
@@ -726,7 +735,7 @@
             E-Mail: office@solarfreund.at</p>
 
             <p><strong>Registrierung:</strong><br>
-            Firmenbuchnummer: FN 123456a<br>
+            Firmenbuchnummer: FN 112233a<br>
             Handelsgericht Wien<br>
             UID-Nummer: ATU65432100</p>
 
@@ -743,6 +752,9 @@
             <p><strong>Geschäftsführung:</strong><br>
             Daniel Wlach</p>
 
+            <p><strong>Geschellschafter</strong><br>
+            Daniel Wlach (100%)</p>
+
             <p><strong>Grundsätzliche Richtung des Mediums:</strong><br>
             Diese Website dient einzig und allein dem Vertrieb sowie zur Information unserer App "SolarFreund". Die Zielgruppe sind Privatpersonen und Kleinbetriebe, die ihren überschüssigen Solarstrom zu einem besseren Preis verkaufen wollen und gleichzeitig das Gemeinschaftsgefühl ihrer Nachbarschaft stärken wollen.</p>
         </section>
@@ -752,7 +764,7 @@
             <h1>Barrierefreiheit</h1>
             
             <h2>Erklärung zur Barrierefreiheit</h2>
-            <p>Wir wollen, dass jeder unsere Plattform ohne Hürden nutzen kann. Diese Seite wurde so programmiert, dass sie den Anforderungen des Web-Zugänglichkeits-Gesetzes (WZG) und den WCAG 2.2 auf Level AA entspricht.</p>
+            <p>Unsere Anforderungen sind klar. Wir wollen, dass jeder unsere Plattform ohne Hürden und Hindernisse nutzen kann. Diesbezüglich wurde diese Seite so entwickelt, dass sie den Anforderungen des Web-Zugänglichkeits-Gesetzes (WZG) und den WCAG 2.2 auf Level AA entspricht.</p>
 
             <h2>Stand der Vereinbarkeit mit den Anforderungen</h2>
             <p>Diese Website ist teilweise konform mit den WCAG 2.2 auf Konformitätsstufe AA. Wir testen den Code regelmäßig mit der WAVE Chrome Extension und den AXE DevTools.</p>
@@ -760,20 +772,20 @@
             <h2>Nicht barrierefreie Inhalte</h2>
             <p>Folgende Einschränkungen sind uns bekannt:</p>
             <ul>
-                <li>Fehlermeldungen im Kontaktformular: Wenn ein Feld falsch ausgefüllt wird, erscheint ein Hinweis, der von Screenreadern aber noch nicht automatisch vorgelesen wird. Geplante Behebung: nächstes Release.</li>
-                <li>Cookie-Banner: Der Banner lässt sich mit der Tastatur bedienen, ist aber noch nicht vollständig in die normale Tab-Reihenfolge der Seite eingebunden. Geplante Behebung: nächster Release.</li>
+                <li>Fehlermeldungen im Kontaktformular: Wenn ein Feld falsch ausgefüllt wird, erscheint ein Hinweis, der von Screenreadern aber noch nicht automatisch vorgelesen wird. Dies verstößt gegen das WCAG Erfolgskriterium 4.1.3 (Statusmeldungen), jedoch wird dies beim nächsten Release behoben.</li>
+                <li>Cookie-Banner: Der Banner lässt sich mit der Tastatur bedienen, ist aber noch nicht vollständig in die normale Tab-Reihenfolge der Seite eingebunden. Dies Verstößt gegen das WCAG Erfolgskriterium 2.4.3 (Fokus-Reihenfolge), wird aber nach aktueller Planung beim nächsten Release behoben sein. </li>
             </ul>
 
             <h2>Erstellung dieser Erklärung zur Barrierefreiheit</h2>
             <p>Diese Erklärung wurde am 10. Mai 2026 erstellt.</p>
 
             <h2>Feedback und Kontaktangaben</h2>
-            <p>Falls du an einer Stelle der Seite Probleme mit Lesbarkeit oder Bedienung hast, meld dich einfach bei uns. Wir schauen uns das an und beheben den Fehler.<br>
+            <p>Falls es bei dir an einer Stelle der Seite zu Problemen bezüglich der Barrierefreiheit gekommen ist, kannst du dich jederzeit bei uns melden. Wir gehen auf jeden individuellen Fall ein und werden uns innerhalb von 1 Monat melden.<br>
             E-Mail: barrierefrei@solarfreund.at<br>
             Telefon: +43 1 555 2025-88</p>
 
             <h2>Durchsetzungsverfahren</h2>
-            <p>Wenn du mit unserer Antwort auf dein Feedback nicht zufrieden bist, kannst du dich an die Beschwerdestelle der Österreichischen Forschungsförderungsgesellschaft (FFG) wenden:<br>
+            <p>Falls du unzufrieden mit unserer Antwort auf dein Feedback bist, steht es dir offen, dies an die Beschwerdestelle der Österreichischen Forschungsförderungsgesellschaft weiterzuleiten:<br>
             Website: <a href="https://www.ffg.at/barrierefreiheit/beschwerdestelle" target="_blank" rel="noopener">www.ffg.at/barrierefreiheit/beschwerdestelle</a></p>
         </section>
 
